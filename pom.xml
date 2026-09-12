@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ============================================================
+  DDD 领域驱动设计教学项目（Maven Multi-Module）
+  作者：xb  |  日期：2026-09-12
+  说明：本工程基于"电商订单"业务场景，演示 DDD 四层架构——
+        interfaces（接口层）→ application（应用层）→ domain（领域层）→ infrastructure（基础设施层）
+  模块列表：
+    1. common          —— 公共基类、异常、工具
+    2. domain          —— 领域层（聚合根、实体、值对象、仓储接口、领域事件）
+    3. application     —— 应用层（应用服务、DTO）
+    4. infrastructure  —— 基础设施层（持久化、事件发布）
+    5. interfaces      —— 接口层（REST Controller）
+    6. start           —— 启动入口
+  ============================================================
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.xb</groupId>
+    <artifactId>ddd-arch-demo</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <name>ddd-arch-demo</name>
+    <description>DDD 领域驱动设计教学项目：电商订单场景（作者 xb）</description>
+
+    <modules>
+        <module>common</module>
+        <module>domain</module>
+        <module>application</module>
+        <module>infrastructure</module>
+        <module>interfaces</module>
+        <module>start</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>21</java.version>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <spring-boot.version>3.4.4</spring-boot.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>
