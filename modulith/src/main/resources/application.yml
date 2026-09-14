@@ -1,0 +1,27 @@
+# ============================================================
+# Spring Modulith 示例配置
+# 作者：xb  |  日期：2026-09-14
+# 说明：与主示例（8080 端口）互不冲突，本示例跑在 8081
+# ============================================================
+server:
+  port: 8081
+
+spring:
+  application:
+    name: modulith-demo
+  datasource:
+    url: jdbc:h2:mem:modulith          # 内存数据库：重启即清空，教学友好
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ''
+  jpa:
+    hibernate:
+      ddl-auto: create-drop            # 按实体自动建表（含事件发布注册表 EVENT_PUBLICATION）
+    defer-datasource-initialization: true   # 先让 Hibernate 建表，再执行 data.sql
+    open-in-view: false
+  sql:
+    init:
+      mode: always                     # 每次启动都执行 data.sql（预置库存）
+  h2:
+    console:
+      enabled: true                    # 浏览器访问 http://localhost:8081/h2-console 可查看 EVENT_PUBLICATION 表

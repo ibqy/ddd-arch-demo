@@ -12,6 +12,7 @@
     4. infrastructure  —— 基础设施层（持久化、事件发布）
     5. interfaces      —— 接口层（REST Controller）
     6. start           —— 启动入口
+    7. modulith        —— Spring Modulith 模块化示例（按业务能力组织，与四层架构对照学习）
   ============================================================
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -34,6 +35,7 @@
         <module>infrastructure</module>
         <module>interfaces</module>
         <module>start</module>
+        <module>modulith</module>
     </modules>
 
     <properties>
