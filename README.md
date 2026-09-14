@@ -4,6 +4,9 @@
 >
 > 一个基于"电商订单"业务场景的 DDD 四层架构实战项目，演示如何用领域驱动设计组织代码。
 > **interfaces → application → domain → infrastructure**，每一层职责清晰、单向依赖。
+>
+> 另含 [Spring Modulith](modulith) 对照示例：同一业务按**业务能力**组织为
+> order / inventory / notification 三个模块（[模块化指南](docs/02-spring-modulith-guide.md)）。
 
 ## 架构图
 
@@ -25,7 +28,7 @@
                └─────────┘         │ OrderRepository（接口）
                                    │ OrderDomainService
                                    │ OrderEvent（领域事件）
-                    └───────────────┘
+                    └──────────────┘
                               │
                        基础设施层（infrastructure）
                      InMemoryOrderRepository
@@ -40,12 +43,18 @@
 | [`infrastructure`](infrastructure) | 基础设施 | InMemoryOrderRepository（仓储实现） |
 | [`interfaces`](interfaces) | 接口层 | OrderController（REST API） |
 | [`start`](start) | 启动 | Spring Boot 启动入口 |
+| [`modulith`](modulith) | Spring Modulith 示例 | 按业务能力组织：order / inventory / notification，事件驱动协作 |
 
 ## 快速启动
 
 ```bash
 # 前置：JDK 21+、Maven 3.9+
+
+# 主示例：四层架构（8080 端口）
 mvn -pl start spring-boot:run
+
+# 对照示例：Spring Modulith 模块化（8081 端口）
+mvn -pl modulith spring-boot:run
 ```
 
 ## 验证
@@ -69,6 +78,22 @@ curl http://localhost:8080/api/orders/1
 
 # 支付
 curl -X POST http://localhost:8080/api/orders/1/pay
+```
+
+### 对照示例：Spring Modulith（端口 8081）
+
+```bash
+# 下单（返回订单 ID，如 1）
+curl -X POST http://localhost:8081/api/orders \
+  -H "Content-Type: application/json" \
+  -d '{"productCode":"SKU-001","quantity":3}'
+
+# 完成订单 → 触发 OrderCompleted 事件 → 自动扣库存 + 发通知
+curl -X POST http://localhost:8081/api/orders/1/complete
+
+# 查订单
+curl http://localhost:8081/api/orders/1
+# → {"id":1,"productCode":"SKU-001","quantity":3,"status":"COMPLETED"}
 ```
 
 ## DDD 知识点速查
@@ -112,6 +137,8 @@ ddd-arch-demo/
 │   └── src/main/java/com/xb/ddd/interfaces/
 │       └── controller/OrderController.java
 ├── start/                           # 启动入口
+├── modulith/                        # Spring Modulith 示例（order/inventory/notification）
+│   └── src/main/java/com/xb/modulith/
 ├── docs/                            # 教学文档
 └── README.md
 ```
