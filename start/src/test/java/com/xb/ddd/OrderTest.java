@@ -2,6 +2,7 @@ package com.xb.ddd;
 
 import com.xb.ddd.domain.event.OrderCreatedEvent;
 import com.xb.ddd.domain.event.OrderEvent;
+import com.xb.ddd.domain.event.OrderPaidEvent;
 import com.xb.ddd.domain.model.order.Order;
 import com.xb.ddd.domain.model.order.OrderItem;
 import com.xb.ddd.domain.model.shared.Address;
@@ -136,6 +137,29 @@ class OrderTest {
             order.cancel();
             assertThrows(IllegalStateException.class, order::pay);
         }
+
+        @Test
+        @DisplayName("PAID → REFUNDING")
+        void requestRefund() {
+            order.pay();
+            order.requestRefund();
+            assertEquals(OrderStatus.REFUNDING, order.status());
+        }
+
+        @Test
+        @DisplayName("REFUNDING → REFUNDED")
+        void completeRefund() {
+            order.pay();
+            order.requestRefund();
+            order.completeRefund();
+            assertEquals(OrderStatus.REFUNDED, order.status());
+        }
+
+        @Test
+        @DisplayName("CREATED 状态不能退款")
+        void cannotRefundWhenCreated() {
+            assertThrows(IllegalStateException.class, order::requestRefund);
+        }
     }
 
     @Nested
@@ -172,6 +196,18 @@ class OrderTest {
 
             List<OrderEvent> second = order.popEvents();
             assertTrue(second.isEmpty());
+        }
+
+        @Test
+        @DisplayName("pay() 发布 OrderPaidEvent")
+        void pay_publishesOrderPaidEvent() {
+            Order order = new Order(1L, 1001L, address, items);
+            order.popEvents();
+            order.pay();
+            List<OrderEvent> events = order.popEvents();
+            assertEquals(1, events.size());
+            assertInstanceOf(OrderPaidEvent.class, events.get(0));
+            assertEquals(1L, ((OrderPaidEvent) events.get(0)).orderId());
         }
     }
 }

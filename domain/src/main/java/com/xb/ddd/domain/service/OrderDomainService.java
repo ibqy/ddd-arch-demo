@@ -18,13 +18,18 @@ public class OrderDomainService {
 
     /**
      * 处理退款请求
-     * <p>判断当前订单是否允许退款，并执行状态转换。</p>
+     * <p>判断当前订单是否允许退款，并执行状态转换。
+     * 退款规则：PAID / SHIPPED → REFUNDING。</p>
      */
     public void requestRefund(Order order) {
-        // 只有已支付且未取消的订单才能退款
-        if (order.status() != OrderStatus.PAID && order.status() != OrderStatus.SHIPPED) {
-            throw new IllegalStateException("当前状态不可退款：" + order.status());
-        }
-        // 这里仅演示状态判断，实际生产还需要验证退款金额、支付流水等
+        order.requestRefund();
+    }
+
+    /**
+     * 完成退款
+     * <p>REFUNDING → REFUNDED。</p>
+     */
+    public void completeRefund(Order order) {
+        order.completeRefund();
     }
 }

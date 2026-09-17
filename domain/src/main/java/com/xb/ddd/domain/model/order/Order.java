@@ -2,6 +2,7 @@ package com.xb.ddd.domain.model.order;
 
 import com.xb.ddd.domain.event.OrderCreatedEvent;
 import com.xb.ddd.domain.event.OrderEvent;
+import com.xb.ddd.domain.event.OrderPaidEvent;
 import com.xb.ddd.domain.model.shared.Address;
 import com.xb.ddd.domain.model.shared.Money;
 import com.xb.ddd.domain.model.shared.OrderStatus;
@@ -62,6 +63,7 @@ public class Order {
     public void pay() {
         assertStatus(OrderStatus.CREATED);
         this.status = OrderStatus.PAID;
+        this.domainEvents.add(new OrderPaidEvent(this.id, this.totalAmount));
     }
 
     /** 发货 */
@@ -82,6 +84,16 @@ public class Order {
         this.status = OrderStatus.CANCELLED;
     }
 
+    /** 申请退款（PAID / SHIPPED → REFUNDING） */
+    public void requestRefund() {
+        transitTo(OrderStatus.REFUNDING);
+    }
+
+    /** 完成退款（REFUNDING → REFUNDED） */
+    public void completeRefund() {
+        transitTo(OrderStatus.REFUNDED);
+    }
+
     /** 修改收货地址（返回新地址保证不变性） */
     public void changeAddress(String newDetail) {
         assertStatus(OrderStatus.CREATED);
@@ -94,6 +106,13 @@ public class Order {
         if (this.status != expected) {
             throw new IllegalStateException("当前状态 " + this.status + " 不能执行该操作，需要 " + expected);
         }
+    }
+
+    private void transitTo(OrderStatus target) {
+        if (!this.status.canTransitTo(target)) {
+            throw new IllegalStateException("当前状态 " + this.status + " 不能转换到 " + target);
+        }
+        this.status = target;
     }
 
     /** 获取并清空领域事件（由 infrastructure 层调用） */

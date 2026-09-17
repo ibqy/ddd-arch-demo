@@ -3,6 +3,8 @@ package com.xb.ddd;
 import com.xb.ddd.application.dto.OrderCreateRequest;
 import com.xb.ddd.application.dto.OrderResponse;
 import com.xb.ddd.application.service.OrderAppService;
+import com.xb.ddd.common.exception.BizException;
+import com.xb.ddd.domain.service.OrderDomainService;
 import com.xb.ddd.infrastructure.repository.InMemoryOrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,7 +22,7 @@ class OrderAppServiceTest {
 
     @BeforeEach
     void setUp() {
-        appService = new OrderAppService(new InMemoryOrderRepository());
+        appService = new OrderAppService(new InMemoryOrderRepository(), new OrderDomainService());
     }
 
     @Test
@@ -104,6 +106,46 @@ class OrderAppServiceTest {
         OrderResponse second = appService.createOrder(request);
 
         assertTrue(second.orderId() > first.orderId());
+    }
+
+    @Test
+    @DisplayName("退款流程：PAID → REFUNDING → REFUNDED")
+    void refundFlow_fullCycle() {
+        OrderCreateRequest request = createRequest(1001L, "键盘", new BigDecimal("100"), 1);
+        OrderResponse created = appService.createOrder(request);
+        appService.payOrder(created.orderId());
+
+        appService.requestRefund(created.orderId());
+        assertEquals("REFUNDING", appService.getOrder(created.orderId()).status());
+
+        appService.completeRefund(created.orderId());
+        assertEquals("REFUNDED", appService.getOrder(created.orderId()).status());
+    }
+
+    @Test
+    @DisplayName("退款流程：SHIPPED → REFUNDING")
+    void refundFlow_fromShipped() {
+        OrderCreateRequest request = createRequest(1001L, "键盘", new BigDecimal("100"), 1);
+        OrderResponse created = appService.createOrder(request);
+        appService.payOrder(created.orderId());
+
+        appService.requestRefund(created.orderId());
+        assertEquals("REFUNDING", appService.getOrder(created.orderId()).status());
+    }
+
+    @Test
+    @DisplayName("CREATED 状态不能退款")
+    void refundFlow_fromCreated_throws() {
+        OrderCreateRequest request = createRequest(1001L, "键盘", new BigDecimal("100"), 1);
+        OrderResponse created = appService.createOrder(request);
+
+        assertThrows(IllegalStateException.class, () -> appService.requestRefund(created.orderId()));
+    }
+
+    @Test
+    @DisplayName("查询不存在的订单抛出 BizException")
+    void getOrder_notFound_throwsBizException() {
+        assertThrows(BizException.class, () -> appService.getOrder(999L));
     }
 
     private OrderCreateRequest createRequest(Long userId, String productName, BigDecimal price, int qty) {

@@ -36,7 +36,8 @@ class OrderDomainServiceTest {
     void requestRefund_whenPaid() {
         Order order = new Order(1L, 1001L, address, items);
         order.pay();
-        assertDoesNotThrow(() -> domainService.requestRefund(order));
+        domainService.requestRefund(order);
+        assertEquals(OrderStatus.REFUNDING, order.status());
     }
 
     @Test
@@ -45,7 +46,8 @@ class OrderDomainServiceTest {
         Order order = new Order(1L, 1001L, address, items);
         order.pay();
         order.ship();
-        assertDoesNotThrow(() -> domainService.requestRefund(order));
+        domainService.requestRefund(order);
+        assertEquals(OrderStatus.REFUNDING, order.status());
     }
 
     @Test
@@ -71,5 +73,15 @@ class OrderDomainServiceTest {
         order.ship();
         order.deliver();
         assertThrows(IllegalStateException.class, () -> domainService.requestRefund(order));
+    }
+
+    @Test
+    @DisplayName("完成退款：REFUNDING → REFUNDED")
+    void completeRefund() {
+        Order order = new Order(1L, 1001L, address, items);
+        order.pay();
+        domainService.requestRefund(order);
+        domainService.completeRefund(order);
+        assertEquals(OrderStatus.REFUNDED, order.status());
     }
 }

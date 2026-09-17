@@ -3,6 +3,7 @@ package com.xb.ddd.interfaces.controller;
 import com.xb.ddd.application.dto.OrderCreateRequest;
 import com.xb.ddd.application.dto.OrderResponse;
 import com.xb.ddd.application.service.OrderAppService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -25,7 +26,7 @@ public class OrderController {
 
     /** POST /api/orders — 创建订单 */
     @PostMapping
-    public OrderResponse create(@RequestBody OrderCreateRequest request) {
+    public OrderResponse create(@Valid @RequestBody OrderCreateRequest request) {
         return orderAppService.createOrder(request);
     }
 
@@ -39,6 +40,20 @@ public class OrderController {
     @PostMapping("/{id}/pay")
     public String pay(@PathVariable Long id) {
         orderAppService.payOrder(id);
+        return "ok";
+    }
+
+    /** POST /api/orders/{id}/refund — 申请退款 */
+    @PostMapping("/{id}/refund")
+    public String requestRefund(@PathVariable Long id) {
+        orderAppService.requestRefund(id);
+        return "ok";
+    }
+
+    /** POST /api/orders/{id}/refund/complete — 完成退款 */
+    @PostMapping("/{id}/refund/complete")
+    public String completeRefund(@PathVariable Long id) {
+        orderAppService.completeRefund(id);
         return "ok";
     }
 }

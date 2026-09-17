@@ -22,7 +22,7 @@ public enum OrderStatus {
         return switch (this) {
             case CREATED   -> target == PAID || target == CANCELLED;
             case PAID      -> target == SHIPPED || target == REFUNDING;
-            case SHIPPED   -> target == DELIVERED;
+            case SHIPPED   -> target == DELIVERED || target == REFUNDING;
             case DELIVERED -> false; // 终态
             case CANCELLED -> false;
             case REFUNDING -> target == REFUNDED || target == SHIPPED;

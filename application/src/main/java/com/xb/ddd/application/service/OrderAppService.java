@@ -2,11 +2,13 @@ package com.xb.ddd.application.service;
 
 import com.xb.ddd.application.dto.OrderCreateRequest;
 import com.xb.ddd.application.dto.OrderResponse;
+import com.xb.ddd.common.exception.BizException;
 import com.xb.ddd.domain.model.order.Order;
 import com.xb.ddd.domain.model.order.OrderItem;
 import com.xb.ddd.domain.model.shared.Address;
 import com.xb.ddd.domain.model.shared.Money;
 import com.xb.ddd.domain.repository.OrderRepository;
+import com.xb.ddd.domain.service.OrderDomainService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,10 +33,12 @@ import java.util.concurrent.atomic.AtomicLong;
 public class OrderAppService {
 
     private final OrderRepository orderRepository;
+    private final OrderDomainService orderDomainService;
     private final AtomicLong idGen = new AtomicLong(1);
 
-    public OrderAppService(OrderRepository orderRepository) {
+    public OrderAppService(OrderRepository orderRepository, OrderDomainService orderDomainService) {
         this.orderRepository = orderRepository;
+        this.orderDomainService = orderDomainService;
     }
 
     /** 创建订单用例 */
@@ -68,15 +72,33 @@ public class OrderAppService {
     public OrderResponse getOrder(Long id) {
         return orderRepository.findById(id)
             .map(OrderResponse::from)
-            .orElseThrow(() -> new RuntimeException("订单不存在"));
+            .orElseThrow(() -> new BizException(404, "订单不存在"));
     }
 
     /** 支付订单 */
     @Transactional
     public void payOrder(Long id) {
-        orderRepository.findById(id).ifPresent(order -> {
-            order.pay();
-            orderRepository.save(order);
-        });
+        Order order = orderRepository.findById(id)
+            .orElseThrow(() -> new BizException(404, "订单不存在"));
+        order.pay();
+        orderRepository.save(order);
+    }
+
+    /** 申请退款 */
+    @Transactional
+    public void requestRefund(Long id) {
+        Order order = orderRepository.findById(id)
+            .orElseThrow(() -> new BizException(404, "订单不存在"));
+        orderDomainService.requestRefund(order);
+        orderRepository.save(order);
+    }
+
+    /** 完成退款 */
+    @Transactional
+    public void completeRefund(Long id) {
+        Order order = orderRepository.findById(id)
+            .orElseThrow(() -> new BizException(404, "订单不存在"));
+        orderDomainService.completeRefund(order);
+        orderRepository.save(order);
     }
 }
