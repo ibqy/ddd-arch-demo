@@ -9,6 +9,11 @@
     <dependencies>
         <dependency><groupId>com.xb</groupId><artifactId>interfaces</artifactId><version>${project.version}</version></dependency>
         <dependency><groupId>com.xb</groupId><artifactId>infrastructure</artifactId><version>${project.version}</version></dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

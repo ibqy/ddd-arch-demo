@@ -143,6 +143,47 @@ ddd-arch-demo/
 └── README.md
 ```
 
+## 实现边界
+
+### 已实现
+- ✅ DDD 四层架构完整示例（interfaces → application → domain → infrastructure）
+- ✅ 聚合根 Order + 状态机（CREATED → PAID → SHIPPED → DELIVERED / CANCELLED）
+- ✅ 值对象 Money / Address（不可变 + 相等性判断）
+- ✅ 领域事件 OrderCreatedEvent
+- ✅ 领域服务 OrderDomainService（退款校验）
+- ✅ 应用服务 OrderAppService（用例编排）
+- ✅ 内存仓储 InMemoryOrderRepository
+- ✅ Spring Modulith 对照示例（按业务能力组织）
+- ✅ 50 个单元测试覆盖
+
+### 教学简化
+- 仓储使用内存实现（ConcurrentHashMap），生产环境替换为 JPA/MyBatis
+- 无事务管理实际实现（@Transactional 仅声明）
+- 无分布式事件发布（领域事件仅内存传递）
+
+### 未实现
+- ❌ 数据库持久化（JPA/MyBatis 映射）
+- ❌ 分布式事件总线（Kafka/RabbitMQ）
+- ❌ CQRS / Event Sourcing
+- ❌ Saga 分布式事务
+- ❌ 安全认证（Spring Security）
+
+## 测试覆盖
+
+```bash
+mvn test -pl start
+```
+
+| 测试类 | 测试数 | 覆盖内容 |
+|--------|--------|----------|
+| MoneyTest | 8 | 值对象：创建、加法、乘法、负数校验、相等性、不可变性 |
+| AddressTest | 8 | 值对象：创建、withDetail、sameCity、equals/hashCode |
+| OrderItemTest | 4 | 实体：创建、小计计算 |
+| OrderTest | 15 | 聚合根：状态机、领域事件、不可变列表、地址修改 |
+| OrderDomainServiceTest | 5 | 领域服务：退款状态校验 |
+| OrderAppServiceTest | 6 | 应用服务：创建、查询、支付、ID 自增 |
+| InMemoryOrderRepositoryTest | 4 | 仓储：保存、查询、覆盖 |
+
 ## License
 
 仅用于教学交流，作者：xb

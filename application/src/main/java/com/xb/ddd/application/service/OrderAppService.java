@@ -46,14 +46,16 @@ public class OrderAppService {
             request.district(), request.detail());
 
         // 2. 创建订单项
-        var items = request.items().stream()
-            .map(i -> new OrderItem(items.indexOf(i) + 1,
+        List<OrderItem> orderItems = new java.util.ArrayList<>();
+        for (int idx = 0; idx < request.items().size(); idx++) {
+            var i = request.items().get(idx);
+            orderItems.add(new OrderItem(idx + 1,
                 i.productId(), i.productName(),
-                Money.rmb(i.unitPrice()), i.quantity()))
-            .toList();
+                Money.rmb(i.unitPrice()), i.quantity()));
+        }
 
         // 3. 创建聚合根
-        Order order = new Order(idGen.getAndIncrement(), request.userId(), address, items);
+        Order order = new Order(idGen.getAndIncrement(), request.userId(), address, orderItems);
 
         // 4. 持久化
         orderRepository.save(order);
