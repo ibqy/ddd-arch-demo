@@ -15,6 +15,12 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * OrderDomainService 领域服务的单元测试
+ *
+ * 验证跨聚合操作（退款流程）中，领域服务
+ * 如何校验状态并委托聚合根执行状态转换。
+ */
 @DisplayName("OrderDomainService 领域服务测试")
 class OrderDomainServiceTest {
 

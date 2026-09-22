@@ -38,10 +38,18 @@ public class OrderCompletedListener {
 
     private final StockRepository stockRepository;
 
+    /**
+     * 构造库存监听器
+     * @param stockRepository 库存仓储（internal 组件）
+     */
     public OrderCompletedListener(StockRepository stockRepository) {
         this.stockRepository = stockRepository;
     }
 
+    /**
+     * 监听 OrderCompleted 事件，执行库存扣减
+     * @param event 订单完成领域事件
+     */
     @ApplicationModuleListener
     void on(OrderCompleted event) {
         // 1. 加载商品库存（库存不足时抛异常 → 事件保持"未完成"，等待重投）

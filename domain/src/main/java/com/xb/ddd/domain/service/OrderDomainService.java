@@ -13,6 +13,8 @@ import com.xb.ddd.domain.model.shared.OrderStatus;
  *
  * <p><b>生产场景</b>：退款流程（需要同时操作 Order 聚合 + Payment 聚合）、
  * 下单锁库存（操作 Order + Inventory 两个聚合）。</p>
+ *
+ * @author ibqy
  */
 public class OrderDomainService {
 

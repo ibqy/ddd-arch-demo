@@ -19,6 +19,8 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * <p><b>生产场景</b>：使用 MyBatis-Plus 或 Spring Data JPA 实现持久化，
  * 通过 ORM 映射 Order + OrderItem 到数据库表。</p>
+ *
+ * @author ibqy
  */
 @Repository
 public class InMemoryOrderRepository implements OrderRepository {

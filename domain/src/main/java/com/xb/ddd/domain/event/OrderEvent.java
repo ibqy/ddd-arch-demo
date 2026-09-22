@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
  * 或跨聚合/跨限界上下文的异步通知。</p>
  *
  * <p><b>生产场景</b>：订单创建→发积分、支付成功→通知发货、退款→通知财务。</p>
+ *
+ * @author ibqy
  */
 public abstract class OrderEvent {
 

@@ -23,6 +23,8 @@ import java.util.*;
  * </ul></p>
  *
  * <p><b>生产场景</b>：电商订单、采购单、工单等有"生命周期+明细行"的业务对象。</p>
+ *
+ * @author ibqy
  */
 public class Order {
 
@@ -43,6 +45,13 @@ public class Order {
     /** 未发布的领域事件 */
     private final List<OrderEvent> domainEvents = new ArrayList<>();
 
+    /**
+     * 创建订单聚合根
+     * @param id 订单 ID
+     * @param userId 用户 ID
+     * @param address 收货地址（值对象）
+     * @param items 订单项列表（创建后不可变）
+     */
     public Order(Long id, Long userId, Address address, List<OrderItem> items) {
         this.id = id;
         this.userId = userId;
@@ -59,26 +68,26 @@ public class Order {
 
     // ===== 业务方法 =====
 
-    /** 支付 */
+    /** 支付订单（CREATED → PAID），并发布 OrderPaidEvent */
     public void pay() {
         assertStatus(OrderStatus.CREATED);
         this.status = OrderStatus.PAID;
         this.domainEvents.add(new OrderPaidEvent(this.id, this.totalAmount));
     }
 
-    /** 发货 */
+    /** 发货（PAID → SHIPPED） */
     public void ship() {
         assertStatus(OrderStatus.PAID);
         this.status = OrderStatus.SHIPPED;
     }
 
-    /** 签收 */
+    /** 签收（SHIPPED → DELIVERED） */
     public void deliver() {
         assertStatus(OrderStatus.SHIPPED);
         this.status = OrderStatus.DELIVERED;
     }
 
-    /** 取消 */
+    /** 取消订单（仅 CREATED 状态可取消） */
     public void cancel() {
         assertStatus(OrderStatus.CREATED);
         this.status = OrderStatus.CANCELLED;

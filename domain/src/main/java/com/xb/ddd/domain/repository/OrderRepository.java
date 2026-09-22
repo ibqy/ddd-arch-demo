@@ -12,6 +12,8 @@ import java.util.Optional;
  * <p><b>DDD 知识点</b>：Repository 接口定义在 domain 层（属于领域），
  * 具体实现在 infrastructure 层。这样 domain 层不依赖任何框架或数据库细节。
  * 应用层只通过接口操作聚合，不知道底层是 MySQL、MongoDB 还是内存。</p>
+ *
+ * @author ibqy
  */
 public interface OrderRepository {
 

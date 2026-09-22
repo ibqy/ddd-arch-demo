@@ -9,6 +9,11 @@ import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * OrderItem 聚合内实体的单元测试
+ *
+ * 验证订单项的创建和小计金额计算逻辑。
+ */
 @DisplayName("OrderItem 实体测试")
 class OrderItemTest {
 

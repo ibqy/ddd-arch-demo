@@ -23,6 +23,10 @@ public class OrderCompletedNotifier {
 
     private static final Logger log = LoggerFactory.getLogger(OrderCompletedNotifier.class);
 
+    /**
+     * 监听订单完成事件，发送通知
+     * @param event 订单完成领域事件
+     */
     @ApplicationModuleListener
     void on(OrderCompleted event) {
         log.info("[通知模块] 订单 {} 已完成：商品 {} × {}，已向用户发送确认消息",

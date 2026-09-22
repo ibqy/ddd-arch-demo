@@ -6,6 +6,11 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Address 值对象的单元测试
+ *
+ * 验证地址创建、不可变修改（withDetail）、相等性等值对象行为。
+ */
 @DisplayName("Address 值对象测试")
 class AddressTest {
 

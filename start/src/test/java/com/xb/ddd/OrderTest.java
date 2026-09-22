@@ -18,6 +18,12 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Order 聚合根的核心单元测试
+ *
+ * 覆盖状态机流转、领域事件发布、金额计算、
+ * 地址修改等聚合根的关键行为，是 DDD 教学的重点。
+ */
 @DisplayName("Order 聚合根测试")
 class OrderTest {
 

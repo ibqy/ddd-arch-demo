@@ -7,6 +7,8 @@ package com.xb.ddd.domain.model.shared;
  *
  * <p><b>DDD 知识点</b>：状态用枚举定义，状态转换规则写在 {@code canTransitTo} 方法中，
  * 避免状态散落在 if-else 中，降低理解成本。</p>
+ *
+ * @author ibqy
  */
 public enum OrderStatus {
     CREATED,         // 已创建

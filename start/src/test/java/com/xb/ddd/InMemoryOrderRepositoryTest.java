@@ -15,6 +15,12 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * InMemoryOrderRepository 仓储的单元测试
+ *
+ * 验证内存仓储的保存、查询、覆盖等持久化行为，
+ * 体现仓储接口与实现分离的可测试性优势。
+ */
 @DisplayName("InMemoryOrderRepository 仓储测试")
 class InMemoryOrderRepositoryTest {
 

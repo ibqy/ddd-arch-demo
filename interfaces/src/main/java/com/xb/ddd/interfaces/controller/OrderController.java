@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
  *
  * <p><b>DDD 知识点</b>：Interface 层处理 HTTP 协议细节（请求/响应格式、状态码），
  * 不包含业务逻辑。所有业务请求委托给 Application Service。</p>
+ *
+ * @author ibqy
  */
 @RestController
 @RequestMapping("/api/orders")
@@ -24,33 +26,50 @@ public class OrderController {
         this.orderAppService = orderAppService;
     }
 
-    /** POST /api/orders — 创建订单 */
+    /**
+     * 创建订单
+     * @param request 创建订单请求 DTO
+     * @return 订单响应 DTO
+     */
     @PostMapping
     public OrderResponse create(@Valid @RequestBody OrderCreateRequest request) {
         return orderAppService.createOrder(request);
     }
 
-    /** GET /api/orders/{id} — 查询订单 */
+    /**
+     * 查询订单
+     * @param id 订单 ID
+     * @return 订单响应 DTO
+     */
     @GetMapping("/{id}")
     public OrderResponse get(@PathVariable Long id) {
         return orderAppService.getOrder(id);
     }
 
-    /** POST /api/orders/{id}/pay — 支付订单 */
+    /**
+     * 支付订单
+     * @param id 订单 ID
+     */
     @PostMapping("/{id}/pay")
     public String pay(@PathVariable Long id) {
         orderAppService.payOrder(id);
         return "ok";
     }
 
-    /** POST /api/orders/{id}/refund — 申请退款 */
+    /**
+     * 申请退款
+     * @param id 订单 ID
+     */
     @PostMapping("/{id}/refund")
     public String requestRefund(@PathVariable Long id) {
         orderAppService.requestRefund(id);
         return "ok";
     }
 
-    /** POST /api/orders/{id}/refund/complete — 完成退款 */
+    /**
+     * 完成退款
+     * @param id 订单 ID
+     */
     @PostMapping("/{id}/refund/complete")
     public String completeRefund(@PathVariable Long id) {
         orderAppService.completeRefund(id);

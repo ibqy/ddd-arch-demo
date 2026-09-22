@@ -15,6 +15,12 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * OrderAppService 应用服务的单元测试
+ *
+ * 验证创建订单、查询、支付、退款等完整用例流程，
+ * 展示应用层如何编排领域对象完成业务操作。
+ */
 @DisplayName("OrderAppService 应用服务测试")
 class OrderAppServiceTest {
 

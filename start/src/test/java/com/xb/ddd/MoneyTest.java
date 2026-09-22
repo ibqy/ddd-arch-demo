@@ -8,6 +8,11 @@ import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Money 值对象的单元测试
+ *
+ * 验证金额创建、运算、不可变性等值对象核心特征。
+ */
 @DisplayName("Money 值对象测试")
 class MoneyTest {
 

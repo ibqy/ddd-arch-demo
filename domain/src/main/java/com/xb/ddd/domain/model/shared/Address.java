@@ -11,6 +11,8 @@ import java.util.Objects;
  * 一旦创建不可修改（final + getter only），修改时返回新实例。</p>
  *
  * <p><b>生产场景</b>：收货地址、金额、时间段、范围坐标等"描述性"概念。</p>
+ *
+ * @author ibqy
  */
 public final class Address {
 
@@ -19,6 +21,13 @@ public final class Address {
     private final String district;
     private final String detail;
 
+    /**
+     * 创建地址值对象
+     * @param province 省份
+     * @param city 城市
+     * @param district 区县
+     * @param detail 详细地址
+     */
     public Address(String province, String city, String district, String detail) {
         this.province = province;
         this.city = city;

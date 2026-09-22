@@ -1,10 +1,13 @@
 package com.xb.modulith.order.internal;
 
 /**
- * 订单状态（模块内部枚举）
+ * OrderStatus - 订单状态枚举（order 模块内部）
  *
- * @author xb
- * @date 2026-09-14
+ * 定义订单的生命周期状态。状态转换规则
+ * 由聚合根 Order.complete() 中的断言守护，
+ * 保证状态流转的合法性。
+ *
+ * @author ibqy
  */
 public enum OrderStatus {
 

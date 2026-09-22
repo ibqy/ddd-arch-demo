@@ -28,6 +28,8 @@ import java.util.concurrent.atomic.AtomicLong;
  *   <li>调用 Repository 持久化</li>
  *   <li>不包含任何业务规则（业务在 domain 层）</li>
  * </ul></p>
+ *
+ * @author ibqy
  */
 @Service
 public class OrderAppService {
@@ -41,7 +43,11 @@ public class OrderAppService {
         this.orderDomainService = orderDomainService;
     }
 
-    /** 创建订单用例 */
+    /**
+     * 创建订单用例：装配值对象 → 创建聚合根 → 持久化 → 返回 DTO
+     * @param request 创建订单请求 DTO
+     * @return 订单响应 DTO
+     */
     @Transactional
     public OrderResponse createOrder(OrderCreateRequest request) {
         // 1. 装配值对象
@@ -67,7 +73,11 @@ public class OrderAppService {
         return OrderResponse.from(order);
     }
 
-    /** 查询订单 */
+    /**
+     * 查询订单
+     * @param id 订单 ID
+     * @return 订单响应 DTO
+     */
     @Transactional(readOnly = true)
     public OrderResponse getOrder(Long id) {
         return orderRepository.findById(id)
@@ -75,7 +85,10 @@ public class OrderAppService {
             .orElseThrow(() -> new BizException(404, "订单不存在"));
     }
 
-    /** 支付订单 */
+    /**
+     * 支付订单
+     * @param id 订单 ID
+     */
     @Transactional
     public void payOrder(Long id) {
         Order order = orderRepository.findById(id)
@@ -84,7 +97,10 @@ public class OrderAppService {
         orderRepository.save(order);
     }
 
-    /** 申请退款 */
+    /**
+     * 申请退款（委托领域服务执行跨聚合逻辑）
+     * @param id 订单 ID
+     */
     @Transactional
     public void requestRefund(Long id) {
         Order order = orderRepository.findById(id)
@@ -93,7 +109,10 @@ public class OrderAppService {
         orderRepository.save(order);
     }
 
-    /** 完成退款 */
+    /**
+     * 完成退款
+     * @param id 订单 ID
+     */
     @Transactional
     public void completeRefund(Long id) {
         Order order = orderRepository.findById(id)

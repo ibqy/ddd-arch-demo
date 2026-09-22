@@ -11,6 +11,8 @@ import java.util.Objects;
  *
  * <p><b>DDD 知识点</b>：用值对象替代基本类型（BigDecimal），
  * 将金额+货币的校验逻辑封装在此，避免业务代码中分散的 null/负数检查。</p>
+ *
+ * @author ibqy
  */
 public final class Money {
 
@@ -25,12 +27,20 @@ public final class Money {
         this.currency = currency;
     }
 
-    /** 工厂方法：人民币 */
+    /**
+     * 工厂方法：创建人民币金额
+     * @param amount 金额（不能为负）
+     * @return Money 值对象
+     */
     public static Money rmb(BigDecimal amount) {
         return new Money(amount, Currency.getInstance("CNY"));
     }
 
-    /** 金额相加 */
+    /**
+     * 金额相加（要求币种一致）
+     * @param other 另一个金额
+     * @return 新的 Money 值对象
+     */
     public Money add(Money other) {
         if (!this.currency.equals(other.currency)) {
             throw new IllegalArgumentException("币种不一致");
@@ -38,7 +48,11 @@ public final class Money {
         return new Money(this.amount.add(other.amount), this.currency);
     }
 
-    /** 乘以数量 */
+    /**
+     * 乘以数量
+     * @param quantity 数量
+     * @return 新的 Money 值对象
+     */
     public Money multiply(int quantity) {
         return new Money(this.amount.multiply(BigDecimal.valueOf(quantity)), this.currency);
     }

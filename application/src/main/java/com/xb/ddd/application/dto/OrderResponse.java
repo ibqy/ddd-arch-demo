@@ -15,6 +15,8 @@ import java.util.List;
  *
  * <p><b>DDD 知识点</b>：响应 DTO 与领域模型一一对应，但视需要裁剪或聚合字段。
  * 某些敏感或不需暴露的领域属性（如内部版本号）不出现在 DTO 中。</p>
+ *
+ * @author ibqy
  */
 public class OrderResponse {
 
@@ -26,6 +28,12 @@ public class OrderResponse {
     private LocalDateTime createdAt;
     private List<ItemResponse> items;
 
+    /**
+     * 订单项响应 - 单行商品的展示数据
+     *
+     * 从 OrderItem 领域对象装配而来，
+     * 金额序列化为字符串避免前端精度丢失。
+     */
     public static class ItemResponse {
         private String productName;
         private String unitPrice;

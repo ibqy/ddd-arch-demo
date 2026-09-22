@@ -16,6 +16,8 @@ import java.util.List;
  * <p><b>DDD 知识点</b>：Application 层的 DTO 是"面向用例"的数据结构，
  * 与领域模型不同。DTO 传达"用户想做什么"，领域模型表达"业务是什么"。
  * 校验注解标注在 DTO 上，由接口层的 {@code @Valid} 触发。</p>
+ *
+ * @author ibqy
  */
 public class OrderCreateRequest {
 
@@ -38,6 +40,12 @@ public class OrderCreateRequest {
     @Valid
     private List<ItemRequest> items;
 
+    /**
+     * 订单项请求 - 单个商品行的 DTO
+     *
+     * 嵌套在 OrderCreateRequest 中，
+     * 表达"用户想购买什么、买多少"。
+     */
     public static class ItemRequest {
         @NotNull(message = "商品ID不能为空")
         private Long productId;
