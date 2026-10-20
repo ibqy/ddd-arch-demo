@@ -2,7 +2,8 @@ package com.xb.modulith;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.modulith.core.ApplicationModules;
-import org.springframework.modulith.documentation.Documenter;
+// Spring Modulith 1.4 起 Documenter 由 org.springframework.modulith.documentation 迁移至 docs 包
+import org.springframework.modulith.docs.Documenter;
 
 /**
  * 模块边界验证测试（Spring Modulith 的"守门员"）
@@ -33,9 +34,11 @@ class ModularityTests {
 
     /**
      * 生成模块结构图（PlantUML）到 target/spring-modulith-docs/
+     * 注意：Spring Modulith 1.4 起 Documenter 迁至 docs 包，且 writeModules() 更名为
+     * writeModulesAsPlantUml()/writeDocumentation()，这里使用前者保持"只出图"的语义。
      */
     @Test
     void writesDocumentation() {
-        new Documenter(modules).writeModules();
+        new Documenter(modules).writeModulesAsPlantUml();
     }
 }

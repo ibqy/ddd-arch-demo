@@ -3,7 +3,8 @@ package com.xb.modulith.inventory;
 import com.xb.modulith.inventory.internal.StockItem;
 import com.xb.modulith.inventory.internal.StockRepository;
 import com.xb.modulith.order.OrderCompleted;
-import org.springframework.modulith.core.ApplicationModuleListener;
+// Spring Modulith 1.4 起 @ApplicationModuleListener 由 org.springframework.modulith.core 迁移至 events 包
+import org.springframework.modulith.events.ApplicationModuleListener;
 import org.springframework.stereotype.Component;
 
 /**

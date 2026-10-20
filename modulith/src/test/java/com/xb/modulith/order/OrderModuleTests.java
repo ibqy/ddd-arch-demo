@@ -25,8 +25,13 @@ class OrderModuleTests {
     @Autowired
     OrderManagement orderManagement;
 
+    // 字段注入（而非方法参数）：JUnit 5.13 起对"多个 ParameterResolver 竞争同一参数"会直接报错，
+    // SpringExtension 与 Modulith 的 PublishedEventsParameterResolver 会冲突；字段注入不受影响。
+    @Autowired
+    PublishedEvents events;
+
     @Test
-    void publishesOrderCompletedEventOnCompletion(@Autowired PublishedEvents events) {
+    void publishesOrderCompletedEventOnCompletion() {
         // 1. 准备：下一单
         Long orderId = orderManagement.place("SKU-001", 2);
         // 2. 执行：完成订单
