@@ -1,3 +1,16 @@
+<p align="center">
+  <a href="https://ibqy.github.io/ddd-arch-demo/"><img src="https://img.shields.io/badge/在线课件-2F6FEB?style=flat-square" alt="在线课件"></a>
+  <img src="https://img.shields.io/badge/Java-21-2266EE?style=flat-square" alt="Java 21">
+  <img src="https://img.shields.io/badge/Spring_Boot-3.5.16-6DB33F?style=flat-square" alt="Spring Boot 3.5.16">
+  <img src="https://img.shields.io/github/license/ibqy/ddd-arch-demo?style=flat-square" alt="License">
+  <img src="https://img.shields.io/github/stars/ibqy/ddd-arch-demo?style=flat-square" alt="Stars">
+</p>
+
+> **课程位置** 阶段 1 · 架构与资金安全 — 第 1 站
+> [上一站 MyBatis-Plus](https://ibqy.github.io/mybatis-plus-demo/) → **DDD 架构** → [下一站 Spring Cloud](https://ibqy.github.io/spring-cloud-micro-demo/) ｜ [完整学习路线](https://ibqy.github.io/curriculum)
+
+---
+
 # 🧱 DDD 领域驱动设计教学项目
 
 > 作者：xb ｜ 日期：2026-09-12

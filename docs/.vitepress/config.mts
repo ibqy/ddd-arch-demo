@@ -25,6 +25,7 @@ export default defineConfig({
   themeConfig: {
     nav: [
       { text: '首页', link: '/' },
+      { text: '学习路径', link: 'https://ibqy.github.io/curriculum' },
       { text: 'GitHub', link: 'https://github.com/ibqy/ddd-arch-demo' }
     ],
     sidebar: [
@@ -32,7 +33,8 @@ export default defineConfig({
         text: '教学文档',
         items: [
           { text: '01 · DDD 快速指南', link: '/01-ddd-quick-guide' },
-          { text: '02 · Spring Modulith', link: '/02-spring-modulith-guide' }
+          { text: '02 · Spring Modulith', link: '/02-spring-modulith-guide' },
+          { text: '03 · 聚合根与领域事件', link: '/03-aggregate-domain-events' }
         ]
       }
     ],
